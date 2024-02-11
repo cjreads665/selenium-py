@@ -1,6 +1,6 @@
 from selenium import webdriver
 import configparser
-
+from selenium.webdriver.common.by import By
 config = configparser.ConfigParser()
 
 config.read('./config.ini')
@@ -17,9 +17,11 @@ chrome_options.add_argument("executable_path=chromedriver")
 # Initialize the Chrome driver
 driver = webdriver.Chrome(options=chrome_options)
 
-url = base_url + '/'
-# Rest of your Selenium code...
-driver.get(url)
+# login forms 
+url = base_url + '/testings'
+driver.get(url) # get the title
+driver.find_element(By.NAME,'fld_username').send_keys('abc123')
+driver.implicitly_wait(20)
 
 print(driver.title)
 
