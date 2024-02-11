@@ -28,7 +28,7 @@ def test_search_google(browser):
     all_search_results = WebDriverWait(browser, 10).until(
         EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div.g"))
     )
-
+    
     if all_search_results:
         # Verify that at least one search result contains "apple"
         assert any("apple" in result.text.lower() for result in all_search_results)
