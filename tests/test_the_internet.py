@@ -13,8 +13,12 @@ def browser():
 def visitPage(browser):
     browser.get("https://the-internet.herokuapp.com/")
 
-def get_link_via_index(i,browser):
-    return browser.find_elements(By.CSS_SELECTOR,"li a")[i].click()
+def get_elems_by_css(browser,selector):
+    return browser.find_elements(By.CSS_SELECTOR,selector)
+
+def get_link_via_index(browser,i):
+    # return browser.find_elements(By.CSS_SELECTOR,"li a")[i].click()
+    return get_elems_by_css(browser,'li a')[i].click()
 
 def get_element_via_text(text,browser):
     return browser.find_element_by_xpath('//')
@@ -29,12 +33,12 @@ class TestTheInternet:
 
     @pytest.mark.usefixtures("visitPage")
     def test_add_remove_element(self,browser):
-        get_link_via_index(1,browser)
-        # time.sleep(2)
-        add_button = browser.find_element(By.CSS_SELECTOR, "#content button")
-        del_button = browser.find_element(By.CSS_SELECTOR,"#example button")
-        assert add_button is not None, "Button element with id 'goal' not found on the page"
-        assert del_button is None, "Button element with id 'goal' not found on the page"
-        add_button.click()
-
-    
+        get_link_via_index(browser,1)
+        btn_before_add = get_elems_by_css(browser,'#content button')
+        print(btn_before_add)
+        assert len(btn_before_add) == 1, 'btn collection should be 1'
+        btn_before_add[0].click()
+        btn_after_add = get_elems_by_css(browser,'#content button')
+        assert len(btn_after_add) > 1, 'btn collection should have 2 buttons after clicking on add'
+        btn_after_add[1].click()
+        assert len(btn_before_add) == 1, 'btn collection should be 1'
